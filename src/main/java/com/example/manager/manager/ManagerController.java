@@ -58,20 +58,52 @@ public class ManagerController {
 
 	// 목록 조회
 
-	@RequestMapping(value = "/adoptions", method = RequestMethod.GET)
-	public List<Adoption> getAdoptions(HttpServletRequest req) {
+//	@RequestMapping(value = "/adoptions", method = RequestMethod.GET)
+//	public List<Adoption> getAdoptions(HttpServletRequest req) {
+//
+//		List<Adoption> list = adoptionRepo.findAll(Sort.by("id").descending());
+//
+//		return list;
+//	}
+//
+//	@RequestMapping(value = "/lostAndFounds", method = RequestMethod.GET)
+//	public List<LostAndFound> getLostAndFounds(HttpServletRequest req) {
+//
+//		List<LostAndFound> list = lostAndFoundRepo.findAll(Sort.by("id").descending());
+//
+//		return list;
+//	}
 
-		List<Adoption> list = adoptionRepo.findAll(Sort.by("id").descending());
+	@RequestMapping(value = "/adoptions/{id}", method = RequestMethod.GET)
 
-		return list;
+	public Adoption getAdoption
+
+	(@PathVariable("id") long id, HttpServletResponse res) {
+
+		Adoption adoption = adoptionRepo.findById(id).orElse(null);
+
+		if (adoption == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+		return adoption;
 	}
 
-	@RequestMapping(value = "/lostAndFounds", method = RequestMethod.GET)
-	public List<LostAndFound> getLostAndFounds(HttpServletRequest req) {
+	@RequestMapping(value = "/lostAndFounds/{id}", method = RequestMethod.GET)
 
-		List<LostAndFound> list = lostAndFoundRepo.findAll(Sort.by("id").descending());
+	public LostAndFound getLostAndFound
 
-		return list;
+	(@PathVariable("id") long id, HttpServletResponse res) {
+
+		LostAndFound lostAndFound = lostAndFoundRepo.findById(id).orElse(null);
+
+		if (lostAndFound == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+		return lostAndFound;
 	}
 
 	// 페이징
@@ -88,9 +120,9 @@ public class ManagerController {
 		return lostAndFoundRepo.findAll(PageRequest.of(page, 1));
 	}
 
-	// 1건 수정
+	// 1건 상태 수정
 
-	@RequestMapping(value = "/adoptions/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/adoptions/{id}", method = RequestMethod.PATCH)
 
 	public Adoption modifyAdoption
 
@@ -103,20 +135,18 @@ public class ManagerController {
 			return null;
 		}
 
-		// 2. 수정할 필드(컬럼)만 수정한다.
+//	    adoption.setStatus(status);
 
-		adoption.setStatus("완료");
-
-		// {"content":"수정한 내용"}
-		// 모든 필드(컬럼)을 업데이트함
-		// 3. save(update)를 한다.
-
-		adoptionRepo.save(adoption);
+		adoptionRepo.save(adoptions);
 
 		return adoption;
 	}
 
-	@RequestMapping(value = "/lostAndFounds/{id}", method = RequestMethod.PUT)
+	// {"content":"수정한 내용"}
+	// 모든 필드(컬럼)을 업데이트함
+	// 3. save(update)를 한다.
+
+	@RequestMapping(value = "/lostAndFounds/{id}", method = RequestMethod.PATCH)
 
 	public LostAndFound modifyLostAndFound
 
@@ -129,9 +159,9 @@ public class ManagerController {
 			return null;
 		}
 
-		lostAndFound.setStatus("완료");
+//		lostAndFound.setStatus(status);
 
-		lostAndFoundRepo.save(lostAndFound);
+		lostAndFoundRepo.save(lostAndFounds);
 
 		return lostAndFound;
 	}
