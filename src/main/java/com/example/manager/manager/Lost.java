@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class LostAndFound {
+public class Lost {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

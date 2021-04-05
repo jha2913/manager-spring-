@@ -13,13 +13,15 @@ import org.springframework.stereotype.Service;
 public class ManagerService {
 
 	private AdoptionRepository adoptionRepo;
-	private LostAndFoundRepository lostAndFoundAnimalRepo;
+	private LostRepository lostRepo;
+	private FoundRepository foundRepo;
 
 	@Autowired
-	public ManagerService(AdoptionRepository adoptionRepo, LostAndFoundRepository lostAndFoundAnimalRepo) {
+	public ManagerService(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo) {
 
 		this.adoptionRepo = adoptionRepo;
-		this.lostAndFoundAnimalRepo = lostAndFoundAnimalRepo;
+		this.lostRepo = lostRepo;
+		this.foundRepo = foundRepo;
 	}
 
 }

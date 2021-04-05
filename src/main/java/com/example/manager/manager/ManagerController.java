@@ -44,38 +44,21 @@ import com.example.manager.configuration.ApiConfiguration;
 public class ManagerController {
 
 	private AdoptionRepository adoptionRepo;
-	private LostAndFoundRepository lostAndFoundRepo;
+	private LostRepository lostRepo;
 	private FoundRepository foundRepo;
 	@Autowired
 	private ApiConfiguration apiConfig;
 
 	@Autowired
 
-	public ManagerController(AdoptionRepository adoptionRepo, LostAndFoundRepository lostAndFoundrepo,
-			FoundRepository foundRepo) {
+	public ManagerController(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo) {
 		this.adoptionRepo = adoptionRepo;
-		this.lostAndFoundRepo = lostAndFoundrepo;
+		this.lostRepo = lostRepo;
 		this.foundRepo = foundRepo;
 
 	}
 
 	// 목록 조회
-
-//	@RequestMapping(value = "/adoptions", method = RequestMethod.GET)
-//	public List<Adoption> getAdoptions(HttpServletRequest req) {
-//
-//		List<Adoption> list = adoptionRepo.findAll(Sort.by("id").descending());
-//
-//		return list;
-//	}
-//
-//	@RequestMapping(value = "/lostAndFounds", method = RequestMethod.GET)
-//	public List<LostAndFound> getLostAndFounds(HttpServletRequest req) {
-//
-//		List<LostAndFound> list = lostAndFoundRepo.findAll(Sort.by("id").descending());
-//
-//		return list;
-//	}
 
 	@RequestMapping(value = "/adoptions/{id}", method = RequestMethod.GET)
 
@@ -93,20 +76,20 @@ public class ManagerController {
 		return adoption;
 	}
 
-	@RequestMapping(value = "/lostAndFounds/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/losts/{id}", method = RequestMethod.GET)
 
-	public LostAndFound getLostAndFound
+	public Lost getLost
 
 	(@PathVariable("id") long id, HttpServletResponse res) {
 
-		LostAndFound lostAndFound = lostAndFoundRepo.findById(id).orElse(null);
+		Lost lost = lostRepo.findById(id).orElse(null);
 
-		if (lostAndFound == null) {
+		if (lost == null) {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
 
-		return lostAndFound;
+		return lost;
 	}
 
 	@RequestMapping(value = "/founds/{id}", method = RequestMethod.GET)
@@ -133,10 +116,10 @@ public class ManagerController {
 		return adoptionRepo.findAll(PageRequest.of(page, 1));
 	}
 
-	@RequestMapping(value = "/lostAndFounds/paging", method = RequestMethod.GET)
-	public Page<LostAndFound> getLostAndFoundsPaging(@RequestParam("page") int page) {
+	@RequestMapping(value = "/losts/paging", method = RequestMethod.GET)
+	public Page<Lost> getLostsPaging(@RequestParam("page") int page) {
 		// 전체 목록 조회, 페이징
-		return lostAndFoundRepo.findAll(PageRequest.of(page, 1));
+		return lostRepo.findAll(PageRequest.of(page, 1));
 	}
 
 	@RequestMapping(value = "/founds/paging", method = RequestMethod.GET)
@@ -171,24 +154,24 @@ public class ManagerController {
 	// 모든 필드(컬럼)을 업데이트함
 	// 3. save(update)를 한다.
 
-	@RequestMapping(value = "/lostAndFounds/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/losts/{id}", method = RequestMethod.PATCH)
 
-	public LostAndFound modifyLostAndFound
+	public Lost modifyLost
 
-	(@PathVariable("id") long id, @RequestBody LostAndFound lostAndFounds, HttpServletResponse res) {
+	(@PathVariable("id") long id, @RequestBody Lost losts, HttpServletResponse res) {
 
-		LostAndFound lostAndFound = lostAndFoundRepo.findById(id).orElse(null);
+		Lost lost = lostRepo.findById(id).orElse(null);
 
-		if (lostAndFound == null) {
+		if (lost == null) {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
 
-//		lostAndFound.setStatus(status);
+//		lost.setStatus(status);
 
-		lostAndFoundRepo.save(lostAndFounds);
+		lostRepo.save(losts);
 
-		return lostAndFound;
+		return lost;
 	}
 
 	@RequestMapping(value = "/founds/{id}", method = RequestMethod.PATCH)
