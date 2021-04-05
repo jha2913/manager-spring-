@@ -16,7 +16,7 @@ spring:
   #database 접속 정보
   datasource:
          #jdbc:mysql://엔드포인트/데이터베이스?옵션...
-    url: jdbc:mysql://mysql-1.caystvcfqph4.ap-northeast-2.rds.amazonaws.com/manager?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://mysql-1.caystvcfqph4.ap-northeast-2.rds.amazonaws.com/manager?useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true
     username: admin
     password: password123!
     driver-class-name: com.mysql.cj.jdbc.Driver
