@@ -45,14 +45,17 @@ public class ManagerController {
 
 	private AdoptionRepository adoptionRepo;
 	private LostAndFoundRepository lostAndFoundRepo;
+	private FoundRepository foundRepo;
 	@Autowired
 	private ApiConfiguration apiConfig;
 
 	@Autowired
 
-	public ManagerController(AdoptionRepository adoptionRepo, LostAndFoundRepository lostAndFoundrepo) {
+	public ManagerController(AdoptionRepository adoptionRepo, LostAndFoundRepository lostAndFoundrepo,
+			FoundRepository foundRepo) {
 		this.adoptionRepo = adoptionRepo;
 		this.lostAndFoundRepo = lostAndFoundrepo;
+		this.foundRepo = foundRepo;
 
 	}
 
@@ -106,6 +109,22 @@ public class ManagerController {
 		return lostAndFound;
 	}
 
+	@RequestMapping(value = "/founds/{id}", method = RequestMethod.GET)
+
+	public Found getFound
+
+	(@PathVariable("id") long id, HttpServletResponse res) {
+
+		Found found = foundRepo.findById(id).orElse(null);
+
+		if (found == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+		return found;
+	}
+
 	// 페이징
 
 	@RequestMapping(value = "/adoptions/paging", method = RequestMethod.GET)
@@ -118,6 +137,12 @@ public class ManagerController {
 	public Page<LostAndFound> getLostAndFoundsPaging(@RequestParam("page") int page) {
 		// 전체 목록 조회, 페이징
 		return lostAndFoundRepo.findAll(PageRequest.of(page, 1));
+	}
+
+	@RequestMapping(value = "/founds/paging", method = RequestMethod.GET)
+	public Page<Found> getFoundsPaging(@RequestParam("page") int page) {
+		// 전체 목록 조회, 페이징
+		return foundRepo.findAll(PageRequest.of(page, 1));
 	}
 
 	// 1건 상태 수정
@@ -164,6 +189,26 @@ public class ManagerController {
 		lostAndFoundRepo.save(lostAndFounds);
 
 		return lostAndFound;
+	}
+
+	@RequestMapping(value = "/founds/{id}", method = RequestMethod.PATCH)
+
+	public Found modifyFound
+
+	(@PathVariable("id") long id, @RequestBody Found founds, HttpServletResponse res) {
+
+		Found found = foundRepo.findById(id).orElse(null);
+
+		if (found == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+//		lostAndFound.setStatus(status);
+
+		foundRepo.save(founds);
+
+		return found;
 	}
 
 }
