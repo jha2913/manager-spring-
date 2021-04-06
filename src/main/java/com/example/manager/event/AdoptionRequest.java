@@ -1,4 +1,4 @@
-package com.example.manager.manager;
+package com.example.manager.event;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,21 +10,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-
-public class Adoption {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AdoptionRequest {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	private int adoptionId;
 	private String requestNo;
 	private long animalId;
-	private String animalImg;
 	private String noticeNo;
 	private String name;
 	private String mobile;
@@ -39,4 +37,6 @@ public class Adoption {
 	private String houseType;
 	private String reason;
 	private String status;
+	private String animalImg;
+
 }

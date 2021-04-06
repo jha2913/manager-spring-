@@ -1,9 +1,13 @@
 package com.example.manager.manager;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.example.manager.event.AnimalFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +25,10 @@ public class Found {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String status;
+	private long foundId;
 	private String name;
 	private String area;
+	private String animalFile;
 	private String color;
 	private String gender;
 	private String number;
@@ -32,5 +37,6 @@ public class Found {
 	private String listAnimalFile;
 	private String type;
 	private String state;
+	private String status;
 
 }

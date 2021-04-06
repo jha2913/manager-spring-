@@ -23,9 +23,13 @@ spring:
   jpa:
     show-sql: true # 데이터처리할 대 SQL문을 보여줌
     generate-ddl: true # 클래스 정의에 따른 테이블 및 데이터베이스 객체 생성     
-  redis:
-    host: 127.0.0.1
-    port: 6379
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+  rabbitmq:
+    host: ec2-13-124-221-31.ap-northeast-2.compute.amazonaws.com
+    username: rabbitmq
+    password: password123
 
 # 추가적인 속성
 api:
@@ -52,3 +56,4 @@ spring:
   
 api:
   base-path: http://ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com:8080/
+    

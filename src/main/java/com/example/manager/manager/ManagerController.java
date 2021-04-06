@@ -49,10 +49,14 @@ public class ManagerController {
 	@Autowired
 	private ApiConfiguration apiConfig;
 
+	private ManagerService service;
+
 	@Autowired
 
-	public ManagerController(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo) {
+	public ManagerController(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo,
+			ManagerService service) {
 		this.adoptionRepo = adoptionRepo;
+		this.service = service;
 		this.lostRepo = lostRepo;
 		this.foundRepo = foundRepo;
 
@@ -137,15 +141,16 @@ public class ManagerController {
 	(@PathVariable("id") long id, @RequestBody Adoption adoptions, HttpServletResponse res) {
 
 		Adoption adoption = adoptionRepo.findById(id).orElse(null);
+		System.out.println(adoption);
 
 		if (adoption == null) {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
 
-//	    adoption.setStatus(status);
-
 		adoptionRepo.save(adoptions);
+
+		service.sendOrder(adoptions);
 
 		return adoption;
 	}
@@ -167,9 +172,9 @@ public class ManagerController {
 			return null;
 		}
 
-//		lost.setStatus(status);
-
 		lostRepo.save(losts);
+
+		service.sendOrder2(losts);
 
 		return lost;
 	}
@@ -186,8 +191,6 @@ public class ManagerController {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
-
-//		lostAndFound.setStatus(status);
 
 		foundRepo.save(founds);
 
