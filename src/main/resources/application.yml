@@ -4,12 +4,17 @@ server:
 # nohup java -jar -Dspring.profiles.active=prod manager-0.0.1-SNAPSHOT.jar > manager.log &
 
 spring:
+  rabbitmq:
+    host: ec2-13-124-221-31.ap-northeast-2.compute.amazonaws.com
+    username: rabbitmq
+    password: password123
   application:
     name: manager
   profiles:
     active: default
   servlet:
-  #multipart 파일처리 조건
+  # nohup java -jar -Dspring.profiles.active=prod mongyangAnimal-0.0.1-SNAPSHOT.jar > mongyangAnimal.log &
+  # multipart 파일처리 조건
     multipart:
       max-file-size: -1
       max-request-size: -1
@@ -23,37 +28,49 @@ spring:
   jpa:
     show-sql: true # 데이터처리할 대 SQL문을 보여줌
     generate-ddl: true # 클래스 정의에 따른 테이블 및 데이터베이스 객체 생성     
+    properties:
+      hibernate:
+        generate_statistics: true
+        jdbc:
+          batch_size=5
+        order_inserts: true
+        order_updates: true
 #  redis:
 #    host: 127.0.0.1
 #    port: 6379
-  rabbitmq:
-    host: ec2-13-124-221-31.ap-northeast-2.compute.amazonaws.com
-    username: rabbitmq
-    password: password123
 
-# 추가적인 속성
-api:
-  base-path: http://localhost:8080
 
 eureka:
   client:
-    service-url:
+    serviceUrl:
     # 유레카 서버의 주소를 작성
-      default-zone: http://localhost:8761/eureka/
+      defaultZone: http://192.168.0.28:8761/eureka/
   instance:
   # 클라이언트 주소 (자기자신 서비스의 포스트명 ip addr, domain name)
   # AWS에서는 hostname: 퍼블릭IP 써야됨
-    hostname: localhost
-    
+    hostname: 192.168.0.27
+ 
+# 추가적인 속성
+api:
+  base-path: http://localhost:8080
+     
 #prod 프로필
 ---
 spring:
   profiles: prod
-  redis:
-    host: 15.164.98.35
-    port: 6379
-    password: foobared  
+  # redis:
+    # host: 15.164.98.35
+    # port: 6379
+    # password: foobared  
   
-api:
-  base-path: http://ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com:8080/
+# api:
+  # base-path: http://ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com:8080/
     
+eureka:
+  client:
+    service-url:
+      # 유레카의 ec2 주소
+      default-zone: http://13.124.190.225:8761/eureka/
+  instance:
+    # 본인 서비스의 ec2 주소
+    hostname: ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com

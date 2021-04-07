@@ -79,4 +79,8 @@ public class ManagerService {
 		rabbit.convertAndSend("manager.animal.status", lost);
 	}
 
+	public void sendOrder3(Found found) {
+		rabbit.convertAndSend("manager.animal.status", found);
+	}
+
 }

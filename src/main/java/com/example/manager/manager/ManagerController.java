@@ -23,6 +23,7 @@ import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -121,16 +122,16 @@ public class ManagerController {
 	}
 
 	@RequestMapping(value = "/losts/paging", method = RequestMethod.GET)
-	public Page<Lost> getLostsPaging(@RequestParam("page") int page) {
+	public Page<Lost> getLostsPaging(@RequestParam("state") String state, @RequestParam("page") int page) {
 		// 전체 목록 조회, 페이징
-		return lostRepo.findAll(PageRequest.of(page, 1));
+		return lostRepo.findByStateContaining(state, PageRequest.of(page, 1));
 	}
 
-	@RequestMapping(value = "/founds/paging", method = RequestMethod.GET)
-	public Page<Found> getFoundsPaging(@RequestParam("page") int page) {
-		// 전체 목록 조회, 페이징
-		return foundRepo.findAll(PageRequest.of(page, 1));
-	}
+//	@RequestMapping(value = "/founds/paging", method = RequestMethod.GET)
+//	public Page<Found> getFoundsPaging(@RequestParam("state") String state, @RequestParam("page") int page) {
+//		// 전체 목록 조회, 페이징
+//		return foundRepo.findByStateContaining(state, PageRequest.of(page, 1));
+//	}
 
 	// 1건 상태 수정
 
@@ -193,6 +194,8 @@ public class ManagerController {
 		}
 
 		foundRepo.save(founds);
+
+		service.sendOrder3(founds);
 
 		return found;
 	}
