@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.manager.configuration.ApiConfiguration;
+import com.example.manager.event.AnimalFile;
+import com.example.manager.event.AnimalFileRepository;
 
 @RestController
 public class ManagerController {
@@ -47,6 +49,7 @@ public class ManagerController {
 	private AdoptionRepository adoptionRepo;
 	private LostRepository lostRepo;
 	private FoundRepository foundRepo;
+	private AnimalFileRepository animalFileRepo;
 	@Autowired
 	private ApiConfiguration apiConfig;
 
@@ -55,11 +58,12 @@ public class ManagerController {
 	@Autowired
 
 	public ManagerController(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo,
-			ManagerService service) {
+			AnimalFileRepository animalFileRepo, ManagerService service) {
 		this.adoptionRepo = adoptionRepo;
 		this.service = service;
 		this.lostRepo = lostRepo;
 		this.foundRepo = foundRepo;
+		this.animalFileRepo = animalFileRepo;
 
 	}
 
@@ -121,10 +125,28 @@ public class ManagerController {
 		return adoptionRepo.findAll(PageRequest.of(page, 1));
 	}
 
+//	@RequestMapping(value = "/losts/paging", method = RequestMethod.GET)
+//	public Page<Lost> getLostsPaging(@RequestParam("state") String state, @RequestParam("page") int page) {
+//		// 전체 목록 조회, 페이징
+//
+//		List<Lost> list = lostRepo.findAll(Sort.by("id").descending());
+//		for (Lost animal : list) {
+//			for (AnimalFile file : animal.getFiles()) {
+//				file.setDataUrl(apiConfig.getBasePath() + "/animalFile/" + file.getId());
+//			}
+//		}
+//		return lostRepo.findByStateContaining(state, PageRequest.of(page, 1));
+//	}
 	@RequestMapping(value = "/losts/paging", method = RequestMethod.GET)
 	public Page<Lost> getLostsPaging(@RequestParam("state") String state, @RequestParam("page") int page) {
 		// 전체 목록 조회, 페이징
 		return lostRepo.findByStateContaining(state, PageRequest.of(page, 1));
+	}
+
+	@RequestMapping(value = "/losts/pagings", method = RequestMethod.GET)
+	public Page<AnimalFile> getpic(@RequestParam("page") int page) {
+		// 전체 목록 조회, 페이징
+		return animalFileRepo.findAll(PageRequest.of(page, 1));
 	}
 
 //	@RequestMapping(value = "/founds/paging", method = RequestMethod.GET)

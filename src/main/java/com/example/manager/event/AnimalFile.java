@@ -25,8 +25,5 @@ public class AnimalFile {
 	private String fileName;
 	private String contentType;
 	private long lostfoundId;
-
-	// @Transient table에 컬럼 안 생김
-	@Transient
 	private String dataUrl;
 }

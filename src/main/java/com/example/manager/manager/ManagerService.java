@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.manager.event.AdoptionRequest;
+import com.example.manager.event.AnimalFile;
+import com.example.manager.event.AnimalFileRepository;
 import com.example.manager.event.LostAndFound;
 
 // 필수는 아니지만 실무적으로는 거의 사용하는 클래스
@@ -21,14 +23,16 @@ public class ManagerService {
 	private LostRepository lostRepo;
 	private FoundRepository foundRepo;
 	private RabbitTemplate rabbit;
+	private AnimalFileRepository animalFileRepo;
 
 	@Autowired
 	public ManagerService(AdoptionRepository adoptionRepo, LostRepository lostRepo, FoundRepository foundRepo,
-			RabbitTemplate rabbit) {
+			RabbitTemplate rabbit, AnimalFileRepository animalFileRepo) {
 		this.rabbit = rabbit;
 		this.adoptionRepo = adoptionRepo;
 		this.lostRepo = lostRepo;
 		this.foundRepo = foundRepo;
+		this.animalFileRepo = animalFileRepo;
 	}
 
 	// 만든 rabbitmq 이름
@@ -68,6 +72,20 @@ public class ManagerService {
 
 		System.out.println(myLost);
 		lostRepo.save(myLost);
+	}
+
+	@RabbitListener(queues = "animal.file")
+	public void receiveOrder3(AnimalFile animalFile) {
+
+		AnimalFile animalFiles = AnimalFile.builder().dataUrl(animalFile.getDataUrl())
+				.fileName(animalFile.getFileName()).contentType(animalFile.getContentType())
+				.lostfoundId(animalFile.getLostfoundId())
+				// sales_order 참조하고 있는
+				// purchase_order의 id
+				.build();
+
+		System.out.println(animalFile);
+		animalFileRepo.save(animalFiles);
 	}
 
 	public void sendOrder(Adoption adoption) {

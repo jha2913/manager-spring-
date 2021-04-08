@@ -40,6 +40,7 @@ public class Lost {
 	private String type;
 	private String state;
 	private String status;
+	private String dataUrl;
 
 	@OneToMany
 	@JoinColumn(name = "lostfoundId")
