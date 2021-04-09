@@ -63,8 +63,8 @@ spring:
     # port: 6379
     # password: foobared  
   
-# api:
-  # base-path: http://ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com:8080/
+api:
+   base-path: http://ec2-15-164-98-35.ap-northeast-2.compute.amazonaws.com:8080/
     
 eureka:
   client:
